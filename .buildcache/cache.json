@@ -1,8 +1,0 @@
-{
-  "hashes": {
-    "src/motorController.c": "fe335df51ccbaaaaad7e9c07e4da0a3e079a66c6", 
-    "src/main.c": "59dd833c6bc9570ef18850845b211550abbb4af8", 
-    "src/motorController.h": "156f88f191bfd5ff17f1a049a3c92d571ee27c0e"
-  }, 
-  "cmd": "gcc -Isrc -Iinclude -Wall -Wextra -c {infile} -o {outfile}"
-}
