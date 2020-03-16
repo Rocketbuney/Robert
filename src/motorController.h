@@ -1,17 +1,6 @@
 #if !defined(MOTOR_CONTROLLER_H)
 #define MOTOR_CONTROLLER_H
 
-// Pin assignments for motor controller
-enum mot_pinAssignments {
-    AIN1 = 29,
-    AIN2 = 28,
-    BIN1 = 3,
-    BIN2 = 2,
-    PWMA = 1,
-    PWMB = 24,
-    STBY = 7
-};
-
 // Flags for motor opperation
 enum mot_driveMasks {
     RIGHT_FORWARD    = 0b00000001,

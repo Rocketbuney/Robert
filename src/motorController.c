@@ -5,6 +5,16 @@
 char motorFlags = 0x00;
 unsigned motorSpeed = 600;
 
+static enum mot_pinAssignments { // Pin assignments for motor controller
+    AIN1 = 29,
+    AIN2 = 28,
+    BIN1 = 3,
+    BIN2 = 2,
+    PWMA = 1,
+    PWMB = 24,
+    STBY = 7
+};
+
 void mot_initPins() {
     pinMode(PWMA, PWM_OUTPUT);
     pinMode(AIN1, OUTPUT);
