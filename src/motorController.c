@@ -6,10 +6,10 @@ char motorFlags = 0x00;
 unsigned motorSpeed = 600;
 
 static enum mot_pinAssignments { // Pin assignments for motor controller
-    AIN1 = 29,
-    AIN2 = 28,
-    BIN1 = 3,
-    BIN2 = 2,
+    AIN1 = 9,
+    AIN2 = 8,
+    BIN1 = 15,
+    BIN2 = 12,
     PWMA = 1,
     PWMB = 24,
     STBY = 7
@@ -35,11 +35,11 @@ void mot_updatePins() {
     }
 
     if ((motorFlags & LEFT_FORWARD) > 0) {
-        digitalWrite(AIN1, 1);
-        digitalWrite(AIN2, 0);
-    } else if((motorFlags & LEFT_BACKWARD) > 0) {
         digitalWrite(AIN1, 0);
         digitalWrite(AIN2, 1);
+    } else if((motorFlags & LEFT_BACKWARD) > 0) {
+        digitalWrite(AIN1, 1);
+        digitalWrite(AIN2, 0);
     }
 
     if ((motorFlags & STBY_HIGH) > 0) {
@@ -49,7 +49,7 @@ void mot_updatePins() {
     }
 
     pwmWrite(PWMB, motorSpeed);
-    pwmWrite(PWMA, motorSpeed);
+    pwmWrite(PWMA, motorSpeed * 1.25);
 }
 
 void mot_cleanup() {

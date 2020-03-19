@@ -6,61 +6,90 @@
 #include <time.h>
 #include <unistd.h>
 
-enum dist_pinAssignments {
-    TRIG = 8,
-    ECHO = 9,
-};
+void dist_initSensor(dist_sensorID sensor) {
+    int trig;
+    int echo;
 
-static volatile long startTimeUsec;
-static volatile long endTimeUsec;
+    switch(sensor) {
+        case front:
+            trig = 0;
+            echo = 4;
+            break;
+        case left:
+            trig = 3;
+            echo = 6;
+            break;
+        case right:
+            trig = 2;
+            echo = 5;
+            break;
+    }
 
-void dist_initSensor() {
-    pinMode(TRIG, OUTPUT);
-    pinMode(ECHO, INPUT);
+    pinMode(trig, OUTPUT);
+    pinMode(echo, INPUT);
 
-    digitalWrite(TRIG, 0);
-    digitalWrite(ECHO, 0);
-
-    printw("Sensor Balancing\n");
-    sleep(1);
-    printw("Sensor Balanced.\n");
+    digitalWrite(echo, 0);
+    delay(500);
 }
 
-static void recordPulseLength() {
-    startTimeUsec = micros();
-    while (digitalRead(ECHO) == HIGH);
-    endTimeUsec = micros();
+float dist_getDistance(dist_sensorID sensor) {
+    int trig;
+    int echo;
+
+    float startTime;
+    float endTime;
+
+    switch(sensor) {
+        case front:
+            trig = 0;
+            echo = 4;
+            break;
+        case left:
+            trig = 3;
+            echo = 6;
+            break;
+        case right:
+            trig = 2;
+            echo = 5;
+            break;
+    }
+
+    digitalWrite(trig, 1);
+    delay(0.0001);
+    digitalWrite(trig, 0);
+    float startOfMeasurement = micros();
+
+    while(digitalRead(echo) == 0  && micros() - startOfMeasurement < 30000)
+        startTime = micros();
+    
+    while(digitalRead(echo) == 1)
+        endTime = micros();
+    
+    return  (((endTime - startTime) / 2) / 29) < 0 ? 0 : ((endTime - startTime) / 2) / 29;
 }
 
-float dist_getDistance() {
-    // Send trig pulse
-    // Triggering the sensor for 10 microseconds will cause it to send out
-    // 8 ultrasonic (40Khz) bursts and listen for the echos.
-    digitalWrite(TRIG, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(TRIG, LOW);
+void dist_cleanup(dist_sensorID sensor) {
+    int trig;
+    int echo;
 
-    int now = micros();
-    // Wait for echo start
-    // The sensor will raise the echo pin high for the length of time that it took
-    // the ultrasonic bursts to travel round trip.
-    while (digitalRead(ECHO) == LOW && micros() - now < 30000);
-    recordPulseLength();
+    switch(sensor) {
+        case front:
+            trig = 0;
+            echo = 4;
+            break;
+        case left:
+            trig = 3;
+            echo = 6;
+            break;
+        case right:
+            trig = 2;
+            echo = 5;
+            break;
+    }
 
-    long travelTimeUsec = endTimeUsec - startTimeUsec;
-    double distanceMeters = 100 * ((travelTimeUsec / 1000000.0) * 340.29) / 2;
+    pinMode(trig, OUTPUT);
+    pinMode(echo, OUTPUT);
 
-    //Wait for echo end
-    long startTime = micros();
-    while (digitalRead(ECHO) == HIGH);
-    long travelTime = micros() - startTime;
-
-    return distanceMeters;
-}
-
-void dist_cleanup() {
-    digitalWrite(TRIG, 0);
-
-    pinMode(TRIG, OUTPUT);
-    pinMode(ECHO, OUTPUT);
+    digitalWrite(trig, 0);
+    digitalWrite(echo, 0);
 }
