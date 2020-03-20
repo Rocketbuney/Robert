@@ -2,8 +2,10 @@
 #include <wiringPi.h>
 #include <unistd.h>
 #include <math.h>
+#include <stdlib.h>
 #include "motorController.h"
 #include "distanceSensor.h"
+#include "dyad.h"
 
 static void cursesInit() {
     /* Curses Initialisations */
@@ -81,7 +83,7 @@ int main(void) {
         clear();
         delay(250);
     }
-
+    
     gpioCleanup();
     cursesCleanup();
     return 0;

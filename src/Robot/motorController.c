@@ -5,7 +5,7 @@
 char motorFlags = 0x00;
 unsigned motorSpeed = 600;
 
-static enum mot_pinAssignments { // Pin assignments for motor controller
+enum mot_pinAssignments { // Pin assignments for motor controller
     AIN1 = 9,
     AIN2 = 8,
     BIN1 = 15,
