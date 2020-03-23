@@ -1,33 +1,29 @@
+#include <stdlib.h>
 #include <SFML/Graphics.h>
+#include "colors.h"
+#include "panel.h"
 
 int main() {
-    sfVideoMode mode = {800, 600, 32};
+    sfVideoMode mode = {1600, 1200, 32};
     sfRenderWindow* window;
     sfEvent event;
+    panel_t *panel = createPanel(128, 128, 600, 400, "Test Panel");
 
-    /* Create the main window */
-    window = sfRenderWindow_create(mode, "SFML window", sfResize | sfClose, NULL);
+    window = sfRenderWindow_create(mode, "Control Panel", sfClose, NULL);
     if (!window)
         return 1;
 
-    /* Start the game loop */
     while (sfRenderWindow_isOpen(window)) {
-        /* Process events */
         while (sfRenderWindow_pollEvent(window, &event)) {
-            /* Close window : exit */
             if (event.type == sfEvtClosed)
                 sfRenderWindow_close(window);
         }
 
-        /* Clear the screen */
-        sfRenderWindow_clear(window, sfBlack);
-
-        /* Update the window */
+        sfRenderWindow_clear(window, windowBg);
+        drawPanel(panel, window);
         sfRenderWindow_display(window);
     }
 
-    /* Cleanup resources */
     sfRenderWindow_destroy(window);
-
     return 0;
 }

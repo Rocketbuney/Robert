@@ -1,7 +1,7 @@
 import os
 
 # use these flags for very strict C
-cflags = [ "-Wall", "-Wextra", "-pedantic", "-Wdeprecated-declarations" ]
+cflags = [ "-Wall", "-Wextra", "-pedantic", "-Wno-deprecated", "-std=c99" ]
 lflags = [ "-lm" ]
 include = [ "lib/dyad/src" ]
 source = [ "lib/dyad/src" ]
