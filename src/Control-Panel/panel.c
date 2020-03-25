@@ -3,15 +3,7 @@
 #include <string.h>
 #include "colors.h"
 
-struct panel_t {
-    int contentWidth, contentHeight;
-    int titleBarWidth, titleBarHeight;
-    int x, y;
-    char* title;
-};
-
 static const int OUTLINE_THICKNESS = 3;
-
 
 static void drawPanelTitle(panel_t *p, sfRenderWindow *w) {
     sfFont *font = sfFont_createFromFile("res/arial.ttf");
@@ -20,10 +12,28 @@ static void drawPanelTitle(panel_t *p, sfRenderWindow *w) {
     sfText_setString(text, p->title);
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 24);
-    sfText_setColor(text, textColor);    
-    sfText_setPosition(text, (sfVector2f){ p->x + 10, p->y + 5 });
+    sfText_setColor(text, textColor);
+    sfText_setPosition(text, (sfVector2f){ p->x + (p->titleBarWidth / 2) - (sfText_getLocalBounds(text).width / 2), p->y + 5 });
 
     sfRenderWindow_drawText(w, text, NULL);
+}
+
+static void drawPanelButtons(panel_t *p, sfRenderWindow *w) {
+    for (int i = 0; i < p->numButtons; i++) {
+        if(p->buttons[i] != NULL) {
+            button_t *b = p->buttons[i];
+            sfRectangleShape *buttonRect = sfRectangleShape_create();
+
+            sfRectangleShape_setSize(buttonRect, (sfVector2f){ 48, 16 });
+            sfRectangleShape_setPosition(buttonRect, (sfVector2f){ p->x + b->x, p->y + b->y });
+
+            sfRectangleShape_setFillColor(buttonRect, sfWhite);
+            sfRectangleShape_setOutlineColor(buttonRect, panelBoarder);
+            sfRectangleShape_setOutlineThickness(buttonRect, OUTLINE_THICKNESS);
+
+            sfRenderWindow_drawRectangleShape(w, buttonRect, NULL);
+        }
+    }
 }
 
 panel_t *createPanel(int x, int y, int contentWidth, int contentHeight, char *title) {
@@ -37,6 +47,8 @@ panel_t *createPanel(int x, int y, int contentWidth, int contentHeight, char *ti
     p->x = x;
     p->y = y;
     p->title = title;
+
+    p->numButtons = 0;
 
     return p;
 }
@@ -57,6 +69,19 @@ void drawPanel(panel_t *p, sfRenderWindow *w) {
     sfRectangleShape_setFillColor(titleBar, titleBg);
 
     sfRenderWindow_drawRectangleShape(w, contentRect, NULL);
+    drawPanelButtons(p, w);
     sfRenderWindow_drawRectangleShape(w, titleBar, NULL);
     drawPanelTitle(p, w);
 }
+
+void addButton(panel_t *p, button_t *b) {
+    if (p->numButtons < 48) {
+        p->numButtons++;
+        p->buttons[p->numButtons - 1] = b;
+    }
+}
+
+void deletePanel(panel_t *p) {
+    free(p);
+}
+

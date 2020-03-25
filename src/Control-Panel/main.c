@@ -4,10 +4,12 @@
 #include "panel.h"
 
 int main() {
-    sfVideoMode mode = {1600, 1200, 32};
+    sfVideoMode mode = { 1600, 1200, 32 };
     sfRenderWindow* window;
     sfEvent event;
-    panel_t *panel = createPanel(128, 128, 600, 400, "Test Panel");
+    panel_t *infoPanel = createPanel(32, 32, 400, 800, "Info");
+    panel_t *logPanel = createPanel(32, 900, 1536, 225, "Log");
+    panel_t *controlPanel = createPanel(464, 32, 1100, 800, "Control");
 
     window = sfRenderWindow_create(mode, "Control Panel", sfClose, NULL);
     if (!window)
@@ -20,7 +22,9 @@ int main() {
         }
 
         sfRenderWindow_clear(window, windowBg);
-        drawPanel(panel, window);
+        drawPanel(infoPanel, window);
+        drawPanel(logPanel, window);
+        drawPanel(controlPanel, window);
         sfRenderWindow_display(window);
     }
 
