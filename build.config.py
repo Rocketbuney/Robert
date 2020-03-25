@@ -8,8 +8,8 @@ source = [ "lib/dyad/src" ]
 
 if "client" in opt:
     lflags += [ "-L`pwd`/lib/CSFML/lib", "-lcsfml-graphics", "-lcsfml-window" ]
-    include += [ "lib/CSFML/include" ]
-    source += [ "src/Control-Panel" ]
+    include += [ "lib/CSFML/include", "lib/microui/src" ]
+    source += [ "src/Control-Panel", "lib/microui/src" ]
     output = "robert-control-panel"
 
 if "robot" in opt:

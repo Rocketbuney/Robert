@@ -1,3 +1,6 @@
 [submodule "lib/dyad"]
 	path = lib/dyad
 	url = https://github.com/rxi/dyad.git
+[submodule "lib/microui"]
+	path = lib/microui
+	url = https://github.com/rxi/microui.git
