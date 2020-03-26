@@ -61,10 +61,10 @@ float dist_getDistance(dist_sensorID sensor) {
 
     while(digitalRead(echo) == 0  && micros() - startOfMeasurement < 30000)
         startTime = micros();
-    
+
     while(digitalRead(echo) == 1)
         endTime = micros();
-    
+
     return  (((endTime - startTime) / 2) / 29) < 0 ? 0 : ((endTime - startTime) / 2) / 29;
 }
 
