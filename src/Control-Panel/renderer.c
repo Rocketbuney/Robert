@@ -11,8 +11,8 @@ static GLfloat  vert_buf[BUFFER_SIZE *  8];
 static GLubyte color_buf[BUFFER_SIZE * 16];
 static GLuint  index_buf[BUFFER_SIZE *  6];
 
-static int width  = 800;
-static int height = 600;
+static int width  = 600;
+static int height = 520;
 static int buf_idx;
 
 static SDL_Window *window;
@@ -60,7 +60,7 @@ static void flush(void) {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
 
-  glViewport(0, 0, viewport[2], viewport[3]);
+  glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
