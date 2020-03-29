@@ -1,4 +1,3 @@
-#ifdef ROBOT
 #include "distanceSensor.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,4 +93,3 @@ void dist_cleanup(dist_sensorID sensor) {
     digitalWrite(trig, 0);
     digitalWrite(echo, 0);
 }
-#endif

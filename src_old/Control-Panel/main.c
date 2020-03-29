@@ -1,8 +1,14 @@
-#include <SDL2/SDL.h>
 #include <stdio.h>
+
+#include <SDL2/SDL.h>
 #include "renderer.h"
 #include "microui.h"
 #include "panels.h"
+
+#include <pthread.h>
+#include "network.h"
+
+
 
 #define unused(x) ((void) (x))
 
@@ -31,6 +37,10 @@ int main(int argc, char **argv) {
   ctx->text_width = text_width;
   ctx->text_height = text_height;
 
+  /* init network */
+  pthread_t network;
+  pthread_create(&network, NULL, networkRunner, NULL);
+
   /* main loop */
   for (;;) {
     /* process window input */
@@ -41,5 +51,6 @@ int main(int argc, char **argv) {
     render_frame(ctx);
   }
 
+  pthread_join(network, NULL);
   return 0;
 }

@@ -1,4 +1,3 @@
-#ifdef ROBOT
 #include "motorController.h"
 
 #include <wiringPi.h>
@@ -70,4 +69,3 @@ void mot_cleanup() {
     digitalWrite(PWMA, LOW);
     digitalWrite(STBY, LOW);
 }
-#endif

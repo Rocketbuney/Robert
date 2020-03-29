@@ -3,9 +3,10 @@
 #include <unistd.h>
 #include <math.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "motorController.h"
 #include "distanceSensor.h"
-#include "dyad.h"
+#include "network.h"
 
 static void cursesInit() {
     /* Curses Initialisations */
@@ -42,9 +43,13 @@ static void gpioCleanup() {
 }
 
 int main(void) {
+    /* init network */
+    pthread_t network;
+    pthread_create(&network, NULL, networkRunner(), NULL);
+
     cursesInit();
     printw("Press escape to exit.\n");
-    
+
     gpioInit();
 
     unsigned turnThresh = 15;
@@ -54,11 +59,11 @@ int main(void) {
 
     for(;;) {
         motorSpeed = 400;
-        
+
         frontDist = roundf(dist_getDistance(front) + dist_getDistance(front) + dist_getDistance(front)) / 3;
         leftDist = roundf(dist_getDistance(left) + dist_getDistance(left) + dist_getDistance(left)) / 3;
         rightDist = roundf(dist_getDistance(right) + dist_getDistance(right) + dist_getDistance(right)) / 3;
-        
+
         printw("Front: %icm, Left: %icm, Right: %icm\n", frontDist, leftDist, rightDist);
 
         if(frontDist >= turnThresh) {
@@ -76,14 +81,14 @@ int main(void) {
         }
 
         /* apply the motor mask to the board */
-        mot_updatePins();
-        if(getch() == 27) 
+        // mot_updatePins();
+        if(getch() == 27)
             break;
 
         clear();
         delay(250);
     }
-    
+
     gpioCleanup();
     cursesCleanup();
     return 0;
