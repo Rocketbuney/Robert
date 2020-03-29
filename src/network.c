@@ -30,7 +30,7 @@ void *networkRunner() {
 #ifdef CONTROL /* setup networking for the client */
   dyad_addListener(s, DYAD_EVENT_CONNECT, onConnect, NULL);
   dyad_addListener(s, DYAD_EVENT_DATA,    onData,    NULL);
-  dyad_connect(s, "robert.local", 80);
+  dyad_connect(s, "10.0.0.147", 80); /* TODO: make IP not hard Coded*/
 #elif ROBOT /* setup networking for the server */
   dyad_addListener(s, DYAD_EVENT_ACCEPT, onAccept, NULL);
   dyad_listen(s, 80);

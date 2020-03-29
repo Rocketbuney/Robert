@@ -2,7 +2,7 @@ import os
 
 # use these flags for very strict C
 cflags = [ "-Wall", "-Wextra", "-Wno-deprecated", "-std=c99" ]
-lflags = [ "-lm" ]
+lflags = [ "-lm", "-pthread" ]
 include = [ "lib/dyad/src" ]
 source = [ "lib/dyad/src", "src" ]
 

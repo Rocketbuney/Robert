@@ -71,6 +71,11 @@ static void gpioCleanup() {
 int main(int argc, char const *argv[]) {
   unused(argc);
   unused(argv);
+
+  /* init networking thread */
+  pthread_t network;
+  pthread_create(&network, NULL, networkRunner(), NULL);
+
 #ifdef CONTROL
   /* init SDL and renderer */
   SDL_Init(SDL_INIT_EVERYTHING);
@@ -81,10 +86,6 @@ int main(int argc, char const *argv[]) {
   mu_init(ctx);
   ctx->text_width = text_width;
   ctx->text_height = text_height;
-
-  /* init network */
-  pthread_t network;
-  pthread_create(&network, NULL, networkRunner, NULL);
 
   /* main loop */
   for (;;) {
@@ -130,7 +131,7 @@ int main(int argc, char const *argv[]) {
     }
 
     /* apply the motor mask to the board */
-    mot_updatePins();
+    // mot_updatePins();
     if(getch() == 27)
         break;
 
