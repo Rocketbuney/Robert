@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include "network.h"
+#include "dyad.h"
 
 #ifdef CONTROL
 #include <SDL2/SDL.h>
@@ -21,6 +21,8 @@
 
 #define unused(x) ((void) (x))
 
+static dyad_Stream *s;
+
 #ifdef CONTROL
 static mu_Context *ctx;
 
@@ -35,6 +37,14 @@ static int text_height(mu_Font font) {
   return r_get_text_height();
 }
 
+static void onConnect(dyad_Event *e) {
+  printf("connected: %s\n", e->msg);
+}
+
+static void onData(dyad_Event *e) {
+  printf("%s", e->data);
+}
+
 static void controlInit() {
   /* init SDL and renderer */
   SDL_Init(SDL_INIT_EVERYTHING);
@@ -45,6 +55,10 @@ static void controlInit() {
   mu_init(ctx);
   ctx->text_width = text_width;
   ctx->text_height = text_height;
+
+  dyad_addListener(s, DYAD_EVENT_CONNECT, onConnect, NULL);
+  dyad_addListener(s, DYAD_EVENT_DATA,    onData,    NULL);
+  dyad_connect(s, "10.0.0.147", 80); /* TODO: make IP not hard Coded*/
 }
 
 static void controlTick() {
@@ -93,11 +107,23 @@ static void gpioCleanup() {
   dist_cleanup(right);
 }
 
+static void onData(dyad_Event *e) {
+  dyad_write(e->stream, e->data, e->size);
+}
+
+static void onAccept(dyad_Event *e) {
+  dyad_addListener(e->remote, DYAD_EVENT_DATA, onData, NULL);
+  dyad_writef(e->remote, "Echo server\r\n");
+}
+
 static void robotInit() {
   cursesInit();
   printw("Press escape to exit.\n");
 
   gpioInit();
+
+  dyad_addListener(s, DYAD_EVENT_ACCEPT, onAccept, NULL);
+  dyad_listen(s, 80);
 }
 
 static void robotTick() {
@@ -125,8 +151,11 @@ static void robotTick() {
 
   /* apply the motor mask to the board */
   mot_updatePins();
-  if(getch() == 27)
-      goto exit;
+  if(getch() == 27) {
+    gpioCleanup();
+    cursesCleanup();
+    exit(0);
+  }
 
   clear();
   delay(250);
@@ -137,7 +166,9 @@ int main(int argc, char const *argv[]) {
   unused(argc);
   unused(argv);
 
-  static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+  dyad_init();
+  dyad_setUpdateTimeout(0);
+  s = dyad_newStream();
 
 #ifdef CONTROL
   controlInit();
@@ -146,17 +177,19 @@ int main(int argc, char const *argv[]) {
 #endif
 
   for (;;) {
-    pthread_mutex_lock(&mutex);
+    dyad_update();
+
     #ifdef CONTROL
     controlTick();
     #elif ROBOT
     robotTick();
     #endif
-    pthread_mutex_unlock(&mutex)
   }
 
-exit:
+  dyad_shutdown();
+
   #ifdef ROBOT
+exit:
   gpioCleanup();
   cursesCleanup();
   #endif

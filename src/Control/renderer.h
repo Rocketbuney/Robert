@@ -1,5 +1,6 @@
 #ifndef RENDERER_H
 #define RENDERER_H
+#ifndef ROBOT
 
 #include "microui.h"
 
@@ -14,4 +15,5 @@ void r_set_clip_rect(mu_Rect rect);
 void r_clear(mu_Color color);
 void r_present(void);
 
+#endif
 #endif
