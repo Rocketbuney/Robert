@@ -1,4 +1,5 @@
 import os
+import sys
 
 # use these flags for very strict C
 cflags = [ "-Wall", "-Wextra", "-Wno-deprecated", "-std=c99" ]
@@ -18,3 +19,7 @@ if "robot" in opt:
     lflags += [ "-lwiringPi", "-lncurses" ]
     source += [ "src/Robot" ]
     output = "robert"
+
+if "upload" in opt:
+    os.system("sudo scp -r `pwd` pi@10.0.0.147:/home/pi/")
+    sys.exit()
