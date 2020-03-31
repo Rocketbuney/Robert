@@ -12,6 +12,7 @@ static void onData(dyad_Event *e) {
   printf("%s", e->data);
 }
 #elif ROBOT
+
 static void onData(dyad_Event *e) {
   dyad_write(e->stream, e->data, e->size);
 }
