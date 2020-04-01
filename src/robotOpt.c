@@ -1,5 +1,6 @@
 #include "robotOpt.h"
 
+#include <string.h>
 #include <stdlib.h>
 
 robotOpt_t *robotOpt_create() {
@@ -23,7 +24,7 @@ char *robotOpt_serialize(robotOpt_t *r) {
 }
 
 robotOpt_t *robotOpt_deserialize(char *s) {
-  robotObj *r = robotOpt_create();
+  robotOpt_t *r = robotOpt_create();
   r->turnThresh = s[0];
   r->frontDist = s[1];
   r->leftDist = s[2];

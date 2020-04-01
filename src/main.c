@@ -45,7 +45,9 @@ static void onConnect(dyad_Event *e) {
 }
 
 static void onData(dyad_Event *e) {
-  printf("%s", e->data);
+  robotOpt_t *opt = robotOpt_deserialize(e->data);
+
+  printf("%u %u %u\n", opt->frontDist, opt->leftDist, opt->rightDist);
 }
 
 static void controlInit() {
@@ -116,7 +118,14 @@ static void onData(dyad_Event *e) {
 
 static void onAccept(dyad_Event *e) {
   dyad_addListener(e->remote, DYAD_EVENT_DATA, onData, NULL);
-  dyad_writef(e->remote, "Echo server\r\n");
+
+  robotOpt_t *opt = robotOpt_create();
+  opt->frontDist = frontDist;
+  opt->leftDist = leftDist;
+  opt->rightDist = rightDist;
+
+  char *s = robotOpt_serialize(opt);
+  dyad_writef(e->remote, "%s\r\n", s);
 }
 
 static void robotInit() {

@@ -21,5 +21,5 @@ if "robot" in opt:
     output = "robert"
 
 if "upload" in opt:
-    os.system("sudo scp -r `pwd` pi@10.0.0.147:/home/pi/")
+    os.system("scp -r `pwd` pi@10.0.0.147:/home/pi/")
     sys.exit()
