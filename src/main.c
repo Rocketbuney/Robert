@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <pthread.h>
 #include "dyad.h"
 
@@ -22,6 +23,36 @@
 #define unused(x) ((void) (x))
 
 static dyad_Stream *s;
+
+typedef struct robotObj {
+  uint8_t turnThresh, frontDist, leftDist, rightDist, motorSpeed; // 4 bytes
+  char motorFlags; // 1 byte
+} robotObj;
+
+char *robotObj_serialize(robotObj *obj) {
+  char *ser = malloc(sizeof(char) * 5);
+  memcpy(&ser[0], &obj->turnThresh, sizeof(uint8_t));
+  memcpy(&ser[1], &obj->frontDist, sizeof(uint8_t));
+  memcpy(&ser[2], &obj->leftDist, sizeof(uint8_t));
+  memcpy(&ser[3], &obj->rightDist, sizeof(uint8_t));
+  memcpy(&ser[4], &obj->motorSpeed, sizeof(uint8_t));
+
+  memcpy(&ser[5], &obj->motorFlags, sizeof(char));
+
+  return ser;
+}
+
+robotObj *robotObj_deserialize(char *serialized) {
+  robotObj *r = malloc(sizeof(robotObj*));
+  r->turnThresh = serialized[0];
+  r->frontDist = serialized[1];
+  r->leftDist = serialized[2];
+  r->rightDist = serialized[3];
+  r->motorSpeed = serialized[4];
+  r->motorFlags = serialized[5];
+
+  return r;
+}
 
 #ifdef CONTROL
 static mu_Context *ctx;
@@ -70,8 +101,8 @@ static void controlTick() {
   render_frame(ctx);
 }
 #elif ROBOT
-static unsigned turnThresh = 15;
-static unsigned frontDist, leftDist, rightDist;
+static uint8_t turnThresh = 15;
+static uint8_t frontDist, leftDist, rightDist;
 
 static void cursesInit() {
   /* Curses Initialisations */
@@ -169,6 +200,12 @@ int main(int argc, char const *argv[]) {
   dyad_init();
   dyad_setUpdateTimeout(0);
   s = dyad_newStream();
+
+  robotObj obj = (robotObj){ 16, 32, 64, 128, 128, 0 };
+  char *serObj = robotObj_serialize(&obj);
+
+  robotObj *newObj = robotObj_deserialize(serObj);
+  printf("%u %u %u %u %u\n", newObj->turnThresh, newObj->frontDist, newObj->leftDist, newObj->rightDist, newObj->motorSpeed );
 
 #ifdef CONTROL
   controlInit();

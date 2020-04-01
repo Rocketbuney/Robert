@@ -1,6 +1,6 @@
 #ifndef PANELS_H
 #define PANELS_H
-#ifndef ROBOT
+#ifdef CONTROL
 #include "microui.h"
 
 void process_frame(mu_Context *ctx);

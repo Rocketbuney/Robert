@@ -1,6 +1,6 @@
 #ifndef RENDERER_H
 #define RENDERER_H
-#ifndef ROBOT
+#ifdef CONTROL
 
 #include "microui.h"
 
