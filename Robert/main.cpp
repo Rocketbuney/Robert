@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <wiringPi.h>
 
 int main(int argc, const char * argv[]) {
     std::cout << "Hello, World!\n";
