@@ -1,0 +1,3 @@
+[submodule "Robert/Dependencies/WiringPi"]
+	path = Robert/Dependencies/WiringPi
+	url = https://github.com/WiringPi/WiringPi.git
