@@ -7,7 +7,7 @@
 - HC-SR04 UltraSonic Distance Sensor (x3)
 - 5v to 3.3v Logic Level Converter Board
 
-### Pn Map
+## Pin Map
 | Pin Number | Function |   | Function | Pin Number |
 |:----------:|:--------:|:-:|:--------:|:----------:|
 |    3.3v    |   Power  |   |   Power  |     5v     |
