@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D73CB1C824859E4B00DAB44E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D73CB1C724859E4B00DAB44E /* main.cpp */; };
+		D73CB1C824859E4B00DAB44E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D73CB1C724859E4B00DAB44E /* main.c */; };
+		D73CB1E42486DB1900DAB44E /* RPI.c in Sources */ = {isa = PBXBuildFile; fileRef = D73CB1E32486DB1900DAB44E /* RPI.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,9 +25,12 @@
 
 /* Begin PBXFileReference section */
 		D73CB1C424859E4B00DAB44E /* Robert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Robert; sourceTree = BUILT_PRODUCTS_DIR; };
-		D73CB1C724859E4B00DAB44E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D73CB1C724859E4B00DAB44E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D73CB1CE24859EFC00DAB44E /* build */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = build; sourceTree = SOURCE_ROOT; };
 		D73CB1CF24859EFC00DAB44E /* build.config.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = build.config.py; sourceTree = SOURCE_ROOT; };
+		D73CB1D22485A7F500DAB44E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		D73CB1E22486DB1900DAB44E /* RPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPI.h; sourceTree = "<group>"; };
+		D73CB1E32486DB1900DAB44E /* RPI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = RPI.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,11 +63,22 @@
 		D73CB1C624859E4B00DAB44E /* Robert */ = {
 			isa = PBXGroup;
 			children = (
+				D73CB1E12486174D00DAB44E /* src */,
 				D73CB1CE24859EFC00DAB44E /* build */,
 				D73CB1CF24859EFC00DAB44E /* build.config.py */,
-				D73CB1C724859E4B00DAB44E /* main.cpp */,
+				D73CB1D22485A7F500DAB44E /* README.md */,
 			);
 			path = Robert;
+			sourceTree = "<group>";
+		};
+		D73CB1E12486174D00DAB44E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D73CB1C724859E4B00DAB44E /* main.c */,
+				D73CB1E22486DB1900DAB44E /* RPI.h */,
+				D73CB1E32486DB1900DAB44E /* RPI.c */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,7 +138,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D73CB1C824859E4B00DAB44E /* main.cpp in Sources */,
+				D73CB1C824859E4B00DAB44E /* main.c in Sources */,
+				D73CB1E42486DB1900DAB44E /* RPI.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,7 +261,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3JPLW7538B;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Robert/Dependencies/WiringPi/wiringPi/\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Debug;
 		};
@@ -255,7 +278,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3JPLW7538B;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Robert/Dependencies/WiringPi/wiringPi/\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Release;
 		};
