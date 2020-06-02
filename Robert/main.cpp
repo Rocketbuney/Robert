@@ -9,6 +9,8 @@
 #include <iostream>
 #include <unistd.h>
 
+#include <wiringPi.h>
+
 #include "Drivers/TB6612.hpp"
 
 #define unused(x) (void)(x)
@@ -16,6 +18,10 @@
 int main(int argc, const char * argv[]) {
     unused(argc);
     unused(argv);
+    
+    #ifndef __APPLE_CC__
+    wiringPiSetup();
+    #endif
     
     struct TB6612Motor *mot1 = createMotor(9, 8, 1);
     struct TB6612Motor *mot2 = createMotor(15, 12, 24);
