@@ -36,7 +36,7 @@ struct bcm2835_peripheral {
 #define GPIO_READ(g)     *(gpio.addr + 13) &= (1<<(g))
 
 // Function prototypes
-int map_peripheral(volatile struct bcm2835_peripheral *p);
-void unmap_peripheral(volatile struct bcm2835_peripheral *p);
+int rpi_mapPeripheral(volatile struct bcm2835_peripheral *p);
+void rpi_unmapPeripheral(volatile struct bcm2835_peripheral *p);
 
 #endif
