@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D73CB1C824859E4B00DAB44E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D73CB1C724859E4B00DAB44E /* main.c */; };
 		D73CB1E42486DB1900DAB44E /* RPI.c in Sources */ = {isa = PBXBuildFile; fileRef = D73CB1E32486DB1900DAB44E /* RPI.c */; };
+		D73CB1EA2487337B00DAB44E /* TB6612.c in Sources */ = {isa = PBXBuildFile; fileRef = D73CB1E92487337B00DAB44E /* TB6612.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		D73CB1D22485A7F500DAB44E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		D73CB1E22486DB1900DAB44E /* RPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPI.h; sourceTree = "<group>"; };
 		D73CB1E32486DB1900DAB44E /* RPI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = RPI.c; sourceTree = "<group>"; };
+		D73CB1E82487337B00DAB44E /* TB6612.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TB6612.h; sourceTree = "<group>"; };
+		D73CB1E92487337B00DAB44E /* TB6612.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = TB6612.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,11 +77,37 @@
 		D73CB1E12486174D00DAB44E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D73CB1E52487325000DAB44E /* Modules */,
 				D73CB1C724859E4B00DAB44E /* main.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		D73CB1E52487325000DAB44E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				D73CB1E72487336500DAB44E /* TB6612 */,
+				D73CB1E62487326100DAB44E /* RPI */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		D73CB1E62487326100DAB44E /* RPI */ = {
+			isa = PBXGroup;
+			children = (
 				D73CB1E22486DB1900DAB44E /* RPI.h */,
 				D73CB1E32486DB1900DAB44E /* RPI.c */,
 			);
-			path = src;
+			path = RPI;
+			sourceTree = "<group>";
+		};
+		D73CB1E72487336500DAB44E /* TB6612 */ = {
+			isa = PBXGroup;
+			children = (
+				D73CB1E82487337B00DAB44E /* TB6612.h */,
+				D73CB1E92487337B00DAB44E /* TB6612.c */,
+			);
+			path = TB6612;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +169,7 @@
 			files = (
 				D73CB1C824859E4B00DAB44E /* main.c in Sources */,
 				D73CB1E42486DB1900DAB44E /* RPI.c in Sources */,
+				D73CB1EA2487337B00DAB44E /* TB6612.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

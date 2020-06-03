@@ -22,6 +22,8 @@
 
 #include <unistd.h>
 
+volatile struct bcm2835_peripheral gpio = { GPIO_BASE, 0, 0, 0 };
+
 // Exposes the physical address defined in the passed structure using mmap on /dev/mem
 int rpi_mapPeripheral(volatile struct bcm2835_peripheral *p) {
    // Open /dev/mem
