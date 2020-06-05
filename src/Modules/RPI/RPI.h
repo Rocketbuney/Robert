@@ -5,8 +5,6 @@
 //  Created by Jack Thake on 6/1/20.
 //  Copyright © 2020 Jack Thake. All rights reserved.
 //
-
-
 #ifndef RPI_H
 #define RPI_H
 
@@ -15,6 +13,10 @@
 #define BSC0_BASE         (BCM2708_PERI_BASE + 0x205000)    // I2C controller
 #define PAGE_SIZE         (4*1024)
 #define BLOCK_SIZE        (4*1024)
+
+// PWM Macros
+#define MAX_PINS 64
+#define PULSS_TIME 100
 
 // IO Acces
 struct bcm2835_peripheral {
@@ -40,5 +42,10 @@ extern volatile struct bcm2835_peripheral gpio;
 // Function prototypes
 int rpi_mapPeripheral(volatile struct bcm2835_peripheral *p);
 void rpi_unmapPeripheral(volatile struct bcm2835_peripheral *p);
+
+// Software PWM - From Gordon Drogon, WiringPi
+int rpi_softPWMCreate(int pin, int value, int range);
+void rpi_softPWMWrite(int pin, int value);
+void rpi_softPWMStop(int pin);
 
 #endif

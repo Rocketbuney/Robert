@@ -19,6 +19,8 @@ int main() {
     }
 
     TB6612_initBoard();
+	rpi_softPWMCreate(26, 0, 100);
+	rpi_softPWMWrite(26, 1);
     
     GPIO_SET = 1 << PWMA;
     GPIO_SET = 1 << PWMB;
@@ -29,6 +31,7 @@ int main() {
     sleep(1);
     
     TB6612_deInit();
+	rpi_softPWMStop(26);
     rpi_unmapPeripheral(&gpio);
     return 0;
 }
