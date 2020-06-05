@@ -22,8 +22,10 @@ int main() {
     
     GPIO_SET = 1 << PWMA;
     GPIO_SET = 1 << PWMB;
-    TB6612_motorMask = AIN1_enable | BIN1_enable | STBY_enable;
     
+    TB6612_motorMask = AIN1_enable | BIN1_enable | STBY_enable;
+    sleep(1);
+    TB6612_motorMask = AIN1_enable | STBY_enable;
     sleep(1);
     
     TB6612_deInit();
