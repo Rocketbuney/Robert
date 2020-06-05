@@ -1,9 +1,9 @@
 //
-//  RPI.c
-//  Robert
+//	RPI.c
+//	Robert
 //
-//  Created by Jack Thake on 6/1/20.
-//  Copyright © 2020 Jack Thake. All rights reserved.
+//	Created by Jack Thake on 6/1/20.
+//	Copyright © 2020 Jack Thake. All rights reserved.
 //
 
 #include "RPI.h"
@@ -33,22 +33,22 @@ volatile struct bcm2835_peripheral gpio = { GPIO_BASE, 0, 0, 0 };
 int rpi_mapPeripheral(volatile struct bcm2835_peripheral *p) {
    // Open /dev/mem
    if ((p->mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0) {
-      printf("Failed to open /dev/mem, try checking permissions.\n");
-      return -1;
+	  printf("Failed to open /dev/mem, try checking permissions.\n");
+	  return -1;
    }
 
    p->map = mmap(
-      NULL,
-      BLOCK_SIZE,
-      PROT_READ|PROT_WRITE,
-      MAP_SHARED,
-      p->mem_fd,     // File descriptor to physical memory virtual file '/dev/mem'
-      p->addr_p      // Address in physical map that we want this memory block to expose
+	  NULL,
+	  BLOCK_SIZE,
+	  PROT_READ|PROT_WRITE,
+	  MAP_SHARED,
+	  p->mem_fd,	 // File descriptor to physical memory virtual file '/dev/mem'
+	  p->addr_p		 // Address in physical map that we want this memory block to expose
    );
 
    if (p->map == MAP_FAILED) {
-        perror("mmap");
-        return -1;
+		perror("mmap");
+		return -1;
    }
 
    p->addr = (volatile unsigned int *)p->map;
@@ -56,13 +56,13 @@ int rpi_mapPeripheral(volatile struct bcm2835_peripheral *p) {
 }
 
 void rpi_unmapPeripheral(volatile struct bcm2835_peripheral *p) {
-    munmap(p->map, BLOCK_SIZE);
-    close(p->mem_fd);
+	munmap(p->map, BLOCK_SIZE);
+	close(p->mem_fd);
 } 
 
 // Software PWM Implementation
-static volatile int marks         [MAX_PINS];
-static volatile int range         [MAX_PINS];
+static volatile int marks		  [MAX_PINS];
+static volatile int range		  [MAX_PINS];
 static volatile pthread_t threads [MAX_PINS];
 static volatile int newPin		  = -1;
 
@@ -88,7 +88,7 @@ static void delayMicroseconds (unsigned int howLong) {
 	else if (howLong  < 100)
 		delayMicrosecondsHard (howLong);
 	else {
-		sleeper.tv_sec  = wSecs;
+		sleeper.tv_sec	= wSecs;
 		sleeper.tv_nsec = (long)(uSecs * 1000L);
 		nanosleep (&sleeper, NULL);
 	}
@@ -151,8 +151,8 @@ int rpi_softPWMCreate(int pin, int initialValue, int pwmRange) {
 	range [pin] = pwmRange;
 
 	*passPin = pin;
-	newPin   = pin;
-	res      = pthread_create (&myThread, NULL, softPwmThread, (void *)passPin);
+	newPin	 = pin;
+	res		 = pthread_create (&myThread, NULL, softPwmThread, (void *)passPin);
 
 	while (newPin != -1)
 		delayMicroseconds(1000);
