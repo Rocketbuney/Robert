@@ -29,6 +29,8 @@ enum TB6612_pinAssignments {
 };
 
 extern volatile __UINT8_TYPE__ TB6612_motorMask;
+extern volatile __UINT8_TYPE__ TB6612_motorASpeed;
+extern volatile __UINT8_TYPE__ TB6612_motorBSpeed;
 void TB6612_initBoard(void);
 void TB6612_deInit(void);
 

@@ -13,9 +13,15 @@
 
 /* Mask used to control board */
 volatile __UINT8_TYPE__ TB6612_motorMask = 0x0;
+volatile __UINT8_TYPE__ TB6612_motorASpeed = 0x0;
+volatile __UINT8_TYPE__ TB6612_motorBSpeed = 0x0;
 static pthread_t TB6612;
 
 static void TB6612_thread() {
+	/* Values to hold the previous motor speed to check if it has changed.  */
+	__UINT8_TYPE__ lastMotorA = 0x0;	
+	__UINT8_TYPE__ lastMotorB = 0x0;
+	
 	for(;;) {
 		if ((TB6612_motorMask & AIN1_enable) > 0) /* AIN1 bit set */
 			GPIO_SET = 1 << AIN1;
@@ -37,6 +43,16 @@ static void TB6612_thread() {
 			GPIO_SET = 1 << STBY;
 		else
 			GPIO_CLR = 1 << STBY;
+
+		if(TB6612_motorASpeed != lastMotorA) {
+			rpi_softPWMWrite(PWMA, TB6612_motorASpeed);
+			lastMotorA = TB6612_motorASpeed;		
+		}
+
+		if(TB6612_motorBSpeed != lastMotorB) {
+			rpi_softPWMWrite(PWMB, TB6612_motorBSpeed);
+			lastMotorB = TB6612_motorBSpeed;		
+		}
 	}
 }
 
@@ -69,13 +85,21 @@ void TB6612_initBoard(void) {
 	GPIO_CLR = 1 << BIN1;
 	GPIO_CLR = 1 << BIN2;
 	GPIO_CLR = 1 << STBY;
-	
+
+	/* Init PWM */
+	rpi_softPWMCreate(PWMA, 0, 100);	
+	rpi_softPWMCreate(PWMB, 0, 100);	
+
 	pthread_create(&TB6612, NULL, (void *)TB6612_thread, NULL);
 }
 
 void TB6612_deInit(void) {
 	pthread_detach(pthread_self());
-	
+
+	/* Stop PWM */
+	rpi_softPWMStop(PWMA);	
+	rpi_softPWMStop(PWMB);	
+
 	INP_GPIO(PWMA);
 	INP_GPIO(AIN1);
 	INP_GPIO(AIN2);
