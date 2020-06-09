@@ -16,7 +16,7 @@
 
 // PWM Macros
 #define MAX_PINS 64
-#define PULSS_TIME 100
+#define PULSE_TIME 100
 
 // IO Acces
 struct bcm2835_peripheral {
@@ -27,7 +27,7 @@ struct bcm2835_peripheral {
 };
 
 // One 32 bit address holds info for 10 pins
-// GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y)
+// GPIO setup macros. Always use INP_GPIO(x) before using OUT_GPIO(x) or SET_GPIO_ALT(x,y) - Each takes ≈ 1us.
 #define INP_GPIO(g)		  *(gpio.addr + ((g)/10)) &= ~(7<<(((g)%10)*3))
 #define OUT_GPIO(g)		  *(gpio.addr + ((g)/10)) |=  (1<<(((g)%10)*3))
 #define SET_GPIO_ALT(g,a) *(gpio.addr + (((g)/10))) |= (((a)<=3?(a) + 4:(a)==4?3:2)<<(((g)%10)*3))
@@ -44,8 +44,11 @@ int rpi_mapPeripheral(volatile struct bcm2835_peripheral *p);
 void rpi_unmapPeripheral(volatile struct bcm2835_peripheral *p);
 
 // Software PWM - From Gordon Drogon, WiringPi
-int rpi_softPWMCreate(int pin, int value, int range);
-void rpi_softPWMWrite(int pin, int value);
-void rpi_softPWMStop(int pin);
+extern int rpi_softPWMCreate(int pin, int value, int range);
+extern void rpi_softPWMWrite(int pin, int value);
+extern void rpi_softPWMStop(int pin);
+
+extern void delayMicroseconds (unsigned int howLong); 
+extern unsigned int micros(void);
 
 #endif

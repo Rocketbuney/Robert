@@ -21,6 +21,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <time.h>
+#include <stdint.h>
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -78,7 +79,7 @@ static void delayMicrosecondsHard (unsigned int howLong) {
 		gettimeofday (&tNow, NULL);
 }
 
-static void delayMicroseconds (unsigned int howLong) {
+void delayMicroseconds (unsigned int howLong) {
 	struct timespec sleeper;
 	unsigned int uSecs = howLong % 1000000;
 	unsigned int wSecs = howLong / 1000000;
@@ -92,6 +93,17 @@ static void delayMicroseconds (unsigned int howLong) {
 		sleeper.tv_nsec = (long)(uSecs * 1000L);
 		nanosleep (&sleeper, NULL);
 	}
+}
+
+unsigned int micros(void) {
+	uint64_t now, epochMicro;
+	struct timespec ts;
+
+	clock_gettime (CLOCK_MONOTONIC_RAW, &ts);
+	epochMicro = (uint64_t)ts.tv_sec * (uint64_t)1000000 + (uint64_t)(ts.tv_nsec / 1000L);
+	now = (uint64_t)ts.tv_sec * (uint64_t)1000000 + (uint64_t)(ts.tv_nsec / 1000);
+	
+	return (uint32_t)(now - epochMicro);
 }
 
 static void *softPwmThread (void *arg) {

@@ -19,13 +19,13 @@ enum TB6612_bitMask {
 
 /* Pin Assignments */
 enum TB6612_pinAssignments {
-	PWMA = 17,
-	AIN1 = 22,
-	AIN2 = 27,
-	PWMB = 0,
-	BIN1 = 9,
-	BIN2 = 11,
-	STBY = 10
+	PWMA = 0,
+	AIN1 = 16,
+	AIN2 = 19,
+	PWMB = 1,
+	BIN1 = 26,
+	BIN2 = 20,
+	STBY = 21
 };
 
 extern volatile __UINT8_TYPE__ TB6612_motorMask;
