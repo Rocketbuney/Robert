@@ -28,7 +28,7 @@ syscall exit, #1
 _start:
   ldr r0, =gpio_path  ;@get ready for open()
   ldr r1, =#1052674   ;@ O_RDWR | O_SYNC
-  bl open             ;@ call open 
+  bl open             ;@ call open
 
   ldr r1, =gpio_fd    ;@ load gpio_fd address
   str r0, [r1]        ;@ store file descryptor
@@ -41,16 +41,16 @@ _start:
   mov r5, #0          ;@ expose GPIO base address
   mov r7, #192        ;@ set syscall code for mmap2()
   swi #0              ;@ mmap2(NULL, 256, PROT_READ | PROT_WRITE, MAP_SHARED, 3, 0x500)
-  
+
   ldr r1, =gpio_ptr   ;@ load memory address of gpio_ptr
   str r0, [r1]        ;@ store the returned memory address in gpio_ptr
 
   bl robert_main      ;@ start c code
-  
+
   push {r0}
   ldr r1, =gpio_fd    ;@ presserve c code return value
   ldr r0, [r1]        ;@ load back in the file descryptor
-  bl close            ;@ cleanup program 
+  bl close            ;@ cleanup program
   pop {r0}
 
   bl exit             ;@ exit program

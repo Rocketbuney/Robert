@@ -2,9 +2,15 @@ SYNTAX 	= 0
 CC			= arm-none-eabi-gcc
 
 ifeq ($(SYNTAX), 1)
-	CFLAGS  = -fsyntax-only -nostdlib -nostartfiles -g -Wall
+	CFLAGS  = -fsyntax-only
 else
-	CFLAGS  = -nostdlib -nostartfiles -g -Wall
+	CFLAGS  = -pedantic \
+  -Wall -Werror \
+  -s -Os \
+  -ffunction-sections \
+  -fdata-sections \
+  -nostdlib -nostartfiles \
+  -Wl,--gc-sections
 endif
 
 default: robert
