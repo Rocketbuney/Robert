@@ -2,13 +2,16 @@
 
 extern void *gpio_ptr;
 
-int robert_main(void) {
-  write(1, "hello world\n", 12);
+size_t strlen(const char *s) {
+  const char *p = s;
+  while (*p)
+    p++;
+  return p - s;
+}
 
-  if(!gpio_ptr) {
-    write(1, "failed to load memory region\n", 29);
-    return -1;
-  }
+int robert_main(void) {
+  print("hello world\n");
+  ASSERT(gpio_ptr, "Failed to map GPIO memory\n");
 
   return 0;
 }

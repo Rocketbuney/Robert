@@ -6,6 +6,7 @@
 
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
+typedef unsigned char uint8_t;
 typedef unsigned int size_t;
 typedef int ssize_t;
 
@@ -17,6 +18,7 @@ typedef int ssize_t;
 ssize_t write(int fd, const void *buf, size_t count);
 int open(const char *pathname, int flags);
 int close(int fd);
+void exit(int ret);
 
 /* Memory Management */
 #define PROT_READ   0x1
@@ -27,5 +29,18 @@ int close(int fd);
 
 void *mmap(void *addr, size_t length, int prot, int flags, int fd, int  offset);
 int munmap(void *addr, size_t length);
+
+/* string related */
+size_t strlen(const char *);
+
+/* print */
+#define print(s) write(1, s, strlen(s))
+#define printn(s, n) write(1, s, n)
+
+/* assert */
+#define ASSERT(expr, msg) \
+    if (!(expr)) { \
+        print(msg); \
+        exit(-1); }
 
 #endif
