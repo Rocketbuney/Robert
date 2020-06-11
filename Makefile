@@ -22,6 +22,7 @@ upload: clean
 robert:  main.o start.o
 ifeq ($(SYNTAX), 0)
 		$(CC) $(CFLAGS) -o robert main.o start.o
+		strip --strip-all robert
 endif
 
 main.o: main.c sys.h
