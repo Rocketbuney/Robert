@@ -10,5 +10,5 @@ int robert_main(void) {
     return -1;
   }
 
-  return 3;
+  return 0;
 }
