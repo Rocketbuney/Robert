@@ -1,11 +1,14 @@
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned int size_t;
-typedef int ssize_t;
+#include "sys.h"
 
-ssize_t write(int fd, const void *buf, size_t count);
+extern void *gpio_ptr;
 
-int main(int argc, char** argv) {
-	write(1, "hello world\n", 12);
-	return 0;
+int robert_main(void) {
+  write(1, "hello world\n", 12);
+
+  if(!gpio_ptr) {
+    write(1, "failed to load memory region\n", 29);
+    return -1;
+  }
+
+  return 3;
 }
