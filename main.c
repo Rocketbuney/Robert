@@ -8,14 +8,13 @@ size_t strlen(const char *s) {
 }
 
 int robert_main(void) {
-  print("hello world\n");
-
   ASSERT(gpio_ptr, "Failed to map GPIO memory\n");
 
-  INP_GPIO(24);
-  OUT_GPIO(24);
+  struct timespec sleepDuration = { 2, 0.0 };
 
-  GPIO_SET = 1 << 24;
+  print("hello world\n");
+  nanosleep(&sleepDuration, NULL);
+  print("hello world\n");
 
   return 0;
 }

@@ -8,9 +8,17 @@ typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned char uint8_t;
 typedef unsigned int size_t;
+typedef unsigned int time_t;
 typedef int ssize_t;
 
+struct timespec {
+  time_t tv_sec;        /* seconds */
+  long   tv_nsec;       /* nanoseconds */
+};
+
 /***** system calls ******/
+int nanosleep(const struct timespec *req, struct timespec *rem);
+
 /* File I/O */
 #define	O_RDWR 2
 #define	O_SYNC 0x0080

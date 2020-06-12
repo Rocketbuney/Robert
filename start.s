@@ -22,6 +22,7 @@ syscall write, #4
 syscall open, #5
 syscall close, #6
 syscall exit, #1
+syscall nanosleep, #162
 
 .global _start
 .type _start, %function
