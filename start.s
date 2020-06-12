@@ -13,7 +13,7 @@ gpio_ptr:
 .macro syscall, name, value
  .global \name          ;@ basic system call macro
 \name:
-  mov r7, \value
+  ldr r7, =\value
   swi #0
   bx lr
 .endm
@@ -23,6 +23,7 @@ syscall open, #5
 syscall close, #6
 syscall exit, #1
 syscall nanosleep, #162
+syscall clock_gettime, #263
 
 .global _start
 .type _start, %function
