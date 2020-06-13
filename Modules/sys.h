@@ -38,11 +38,16 @@ void exit(int ret);
 #define MAP_FAILED	((void *)-1)
 #define MAP_ANON    0x20
 
+struct block_t;
 void *mmap(void *addr, size_t length, int prot, int flags, int fd, int  offset);
 int munmap(void *addr, size_t length);
 
+void *malloc(size_t size);
+void free(void *p);
+
 /* string related */
 size_t strlen(const char *);
+void *memset(void *s, int c, size_t n);
 
 /* print */
 #define print(s) write(1, s, strlen(s))
@@ -54,8 +59,10 @@ size_t strlen(const char *);
         print(msg); \
         exit(-1); }
 
+#define UNUSED(x) (void)(x)
+
 /* GPIO macros */
-extern unsigned *gpio_ptr; /* defined by assembly */
+extern uint32_t *gpio_ptr; /* defined by assembly */
 
 #define INP_GPIO(g) *(gpio_ptr+((g)/10)) &= ~(7<<(((g)%10)*3))
 #define OUT_GPIO(g) *(gpio_ptr+((g)/10)) |=  (1<<(((g)%10)*3))
