@@ -1,6 +1,6 @@
 #include "sys.h"
 
-struct block_t {
+static struct block_t {
   size_t size;          /* size of block */
   uint8_t free;             /* weather the block is free or not */
   struct block_t *next; /* pointer to the next block */
@@ -90,11 +90,52 @@ void free(void *p) {
   print("Invalid pointer passed\n");
 }
 
+void *realloc(void *ptr, size_t size_new, size_t size_old) {
+  if(size_new == 0) { /* no length supplied */
+    return NULL;
+  } else if(!ptr) { /* if pointer doesnt exist, allocate */
+    return malloc(size_new);
+  } else if(size_new <= size_old) { /* only allocate more of necessary */
+    return ptr;
+  } else {
+    ASSERT(ptr, "Invalid pounter passed to realloc. Quitting.\n");
+    void *_ptr = malloc(size_new);
+
+    if(_ptr) {
+      memcpy(_ptr, ptr, size_old);
+      free(ptr);
+    }
+
+    return _ptr;
+  }
+}
+
 size_t strlen(const char *s) {
   const char *p = s;
   while (*p)
     p++;
   return p - s;
+}
+
+char *strcpy(char *dest, const char *src) {
+  unsigned n = 0;
+  while(*src) {
+    dest[n] = *src;
+    n++;
+    src++;
+  }
+
+  return dest;
+}
+
+char* strcat(char* destination, const char* source) {
+  char* ptr = destination + strlen(destination);
+
+  while (*source != '\0')
+    *ptr++ = *source++;
+
+  *ptr = '\0';
+  return destination;
 }
 
 void *memset(void *s, int c, size_t n) {
@@ -104,4 +145,16 @@ void *memset(void *s, int c, size_t n) {
   }
 
   return s;
+}
+
+void *memcpy(void *dest, const void *src, size_t n) {
+  size_t i = 0;
+  char *_src = (char*)src, *_dest = (char*)dest;
+
+  while(i < n) {
+    _dest[i] = _src[i];
+    i++;
+  }
+
+  return _dest;
 }

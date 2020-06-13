@@ -3,15 +3,19 @@
 int robert_main(void) {
   ASSERT(gpio_ptr, "Failed to map GPIO memory\n");
 
-  struct timespec *sleepDuration = (struct timespec*)malloc(sizeof(struct timespec));
-  memset(sleepDuration, 0, sizeof(*sleepDuration));
-  sleepDuration->tv_sec = 2.0;
-  sleepDuration->tv_nsec = 0.0;
+  char *str;
 
-  print("Print 1\n");
-  nanosleep(sleepDuration, NULL);
-  print("Print 2\n");
+  /* Initial memory allocation */
+  str = (char *) malloc(6);
+  strcpy(str, "hello,");
+  print(str);
+  print("\n");
 
-  free(sleepDuration);
+  /* Reallocating memory */
+  str = (char *) realloc(str, sizeof(str), 13);
+  strcat(str, " world\n");
+  print(str);
+
+  /* free(str); <-- for some reason causes segmentation fault (SIGSEGV) */
   return 0;
 }

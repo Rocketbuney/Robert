@@ -44,10 +44,14 @@ int munmap(void *addr, size_t length);
 
 void *malloc(size_t size);
 void free(void *p);
+void *realloc(void *ptr, size_t size_new, size_t size_old);
 
 /* string related */
 size_t strlen(const char *);
+char* strcat(char* destination, const char* source);
+char *strcpy(char *dest, const char *src);
 void *memset(void *s, int c, size_t n);
+void *memcpy(void *dest, const void *src, size_t n);
 
 /* print */
 #define print(s) write(1, s, strlen(s))

@@ -1,21 +1,23 @@
 SYNTAX 	= 0
 DEBUG 	= 0
 CC			= arm-none-eabi-gcc
-CFLAGS  = -pedantic \
--Wall  \
--s -Os \
+CFLAGS  = -s -Os \
+-fno-builtin \
+-ffreestanding \
 -ffunction-sections \
 -fdata-sections \
 -nostdlib -nostartfiles \
 -Wl,--gc-sections
+TARGET = robert
 
 ifeq ($(SYNTAX), 1)
-	CFLAGS  = -fsyntax-only -pedantic -Wall -nostdlib -nostartfiles
+	CFLAGS  = -fno-builtin -ffreestanding -fsyntax-only -nostdlib -nostartfiles
 else ifeq ($(DEBUG), 1)
-	CFLAGS = -ggdb -nostdlib -nostartfiles
+	CFLAGS = -ggdb -fno-builtin -ffreestanding -nostdlib -nostartfiles
+	TARGET = robert-d
 endif
 
-default: robert
+default: $(TARGET)
 
 upload: clean
 		sshpass -p "robert" scp -r [!.]* pi@robert.local:/home/pi/Robert
@@ -25,12 +27,12 @@ else
 		sshpass -p "robert" ssh pi@robert.local "cd Robert && ls && make CC=gcc"
 endif
 
-robert:  main.o start.o sys.o
+$(TARGET):  main.o start.o sys.o
+ifeq ($(SYNTAX), 0)
+		$(CC) $(CFLAGS) -o $(TARGET) main.o start.o sys.o
+endif
 ifeq ($(DEBUG), 0)
 		strip --strip-all robert
-endif
-ifeq ($(SYNTAX), 0)
-		$(CC) $(CFLAGS) -o robert main.o start.o sys.o
 endif
 
 main.o: main.c Modules/sys.h
